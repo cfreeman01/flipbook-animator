@@ -1,0 +1,90 @@
+body{
+    overflow-x: scroll;
+}
+
+#canvasDimensions{
+    display: inline;
+    text-align: center;
+    font-family: Courier New, Courier, monospace;
+    width: 20%;
+}
+
+#bottomCanvas {
+    z-index: -100;
+    border: solid black 1px;
+}
+
+.layer {
+    position: absolute;
+    border: solid black 1px;
+    cursor: crosshair;
+}
+
+#frameButtons{
+    text-align: center;
+    font-family: Impact, fantasy;    
+}
+#frameButtons button{
+    width: 30px;
+    height: 30px;
+}
+#deleteButton{
+    color: red;
+    font-weight: bold;
+    position: absolute;
+}
+#undoButton {
+    color: mediumpurple;
+    font-weight: bold;
+    position: absolute;
+}
+#redoButton {
+    color: mediumvioletred;
+    font-weight: bold;
+    position: absolute;
+}
+#addButton {
+    color: steelblue;
+    font-weight: bold;
+    position: absolute;
+}
+#copyButton {
+    color: forestgreen;
+    font-weight: bold;
+    position: absolute;
+}
+
+#options{
+    display: inline;
+    text-align: center;
+    font-size: 14px;
+    font-family: Courier New, Courier, monospace;
+}
+
+#layers {
+    font-size: 14px;
+    font-family: Courier New, Courier, monospace;
+}
+
+#layersContainer{
+    overflow: scroll;
+}
+
+.iconButton {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+#makeGIF fieldset{
+    display: inline;
+    text-align: center;
+    font-size: 14px;
+    font-family: Courier New, Courier, monospace;
+}
+
+.layerMenuItem {
+    cursor: pointer;
+    height: 30px;
+    border: solid grey 1px;
+}

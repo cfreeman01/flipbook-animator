@@ -1,0 +1,136 @@
+﻿<!--Main page-->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Flipbook Animator</title>
+    <link rel="stylesheet" href="stylesheet.css" />
+    <meta charset="utf-8" />
+    <meta name="keywords" content="drawing,animation,flipnote,flipbook,online animation,online drawing" />
+    <meta name="description" content="Simple web-based animation maker." />
+</head>
+
+<body onresize="flipNote.adjustPositions()" onkeydown="flipNote.keyPress(event)" onkeyup="flipNote.keyUp(event)">
+    <div style="text-align: center;">
+        <img src="banners\banner2-1.gif" height="150" width="417" />
+    </div>
+    <hr style="width:10%;" />
+
+    <!--Set canvas dimensions-->
+    <div style="text-align:center">
+        <fieldset id="canvasDimensions" draggable="false">
+            <legend>Canvas dimensions: </legend>
+            <label for="width">Width:</label>
+            <input type="number" id="width" name="width" value="500" style="width: 50px;" max="1000" min="350" /><p style="display:inline">px</p>
+            <br />
+            <label for="width">Height:</label>
+            <input type="number" id="height" name="height" value="500" style="width: 50px;" max="1000" min="350" /><p style="display:inline">px</p>
+            <br /> <br />
+            <button onclick="flipNote.init()" draggable="false" id="createCanvas">Create Canvas</button>
+        </fieldset>
+    </div>
+
+    <!--Element to contain main and bottom canvases-->
+    <div id="canvasContainer" style="text-align:center">
+        <canvas id="bottomCanvas" style="opacity: 0.2;" hidden></canvas>
+    </div>
+
+    <!--Buttons to change,delete,copy frames-->
+    <div id="frameButtons" hidden>
+        <button id="undoButton" title="Undo (ctrl+z)" onclick="flipNote.undo()">↺</button>
+        <button id="redoButton" title="Redo" onclick="flipNote.redo()">↻</button>
+        <button id="lastFrame" title="Last frame" onclick="flipNote.prevFrame()">←</button>
+        <span style="font-family: Courier New, Courier, monospace, Arial, sans-serif" id="frameCount">frame 1/1</span>
+        <button id="nextFrame" title="Next frame" onclick="flipNote.nextFrame()">→</button>
+        <button id="addButton" title="Add frame after current frame" onclick="flipNote.addFrame()">+</button>
+        <button id="deleteButton" title="Delete current frame" onclick="flipNote.deleteFrame(flipNote.cFrame)">X</button>
+    </div>
+
+    <!--Options/tools menu-->
+    <div style="text-align: center; padding-top: 20px; position: absolute" id="optionsDiv" hidden>
+        <fieldset id="options">
+
+            <div style="background-color: #ECECEC;">Tool </div>
+            <br />
+            <div id="toolButtons" style="text-align: center;">
+                <img src="icons\pencil_icon_selected.jpg" style="width: 30px; height: 30px; cursor: pointer;" id="pencil" title="Pencil" onclick="flipNote.switchToPencil()" />
+                <img src="icons\pen_icon.jpg" style="width: 30px; height: 30px; cursor: pointer;" id="pen" title="Pen" onclick="flipNote.switchToPen()" />
+                <img src="icons\eraser_icon.jpg" style="width: 30px; height: 30px; cursor: pointer;" id="eraser" title="Eraser" onclick="flipNote.switchToEraser()" />
+                <img src="icons\dropper_icon.jpg" style="width: 30px; height: 30px; cursor: pointer;" id="dropper" title="Dropper" onclick="flipNote.switchToDropper()" />
+            </div>
+            <br />
+            <div style="background-color: #ECECEC;">Size </div>
+            <input type="number" style="width: 35px" value="1" id="brushSizeText" onchange="flipNote.brushSizeText()" />
+            <p style="display:inline">px</p>
+            <input type="range" min="1" max="100" value="1" id="brushSizeRange" oninput="flipNote.brushSizeRange()" />
+            <p style="background-color: #ECECEC;">Color</p>
+            <label for="colorSimple">Simple: </label>
+            <select name="colorSimple" id="colorSimple" onchange="flipNote.colorSimple()" onclick="flipNote.colorSimple()">
+                <option value="Black" id="#000000" style="color: #000000;">Black</option>
+                <option value="White" id="#ffffff" style="color: #ffffff;">White</option>
+                <option value="Red" id="#ff0000" style="color: #ff0000;">Red</option>
+                <option value="Blue" id="#0026ff" style="color: #0026ff;">Blue</option>
+                <option value="Green" id="#00ff21" style="color: #00ff21;">Green</option>
+                <option value="Yellow" id="#ffd800" style="color: #ffd800;">Yellow</option>
+                <option value="Orange" id="#ff6a00" style="color: #ff6a00;">Orange</option>
+                <option value="Pink" id="#ff00dc" style="color: #ff00dc;">Pink</option>
+                <option value="Purple" id="#b200ff" style="color: #b200ff;">Purple</option>
+            </select>
+            <label for="colorPicker">Picker: </label>
+            <input type="color" oninput="flipNote.colorPicker()" id="colorPicker" />
+            <br /> <br />
+            <div style="background-color: #ECECEC;">Last Frame Opacity </div>
+            <div id="LFOpacity">
+                <label for="LFopacityRange" id="LFopacityValue">20%</label>
+                <input type="range" min="0" max="100" value="20" id="LFopacityRange" name="LFopacityRange" oninput="flipNote.changeLastFrameOpacity()" style="width: 90px;" />
+            </div>
+        </fieldset>
+    </div>
+
+    <!--Layers menu-->
+    <div style="text-align: center; padding-top: 20px; position: absolute" id="layersDiv" hidden>
+        <fieldset id="layers">
+            <div style="background-color: #ECECEC;">Layer Options </div>
+            <div id="layerButtons">
+                <img src="icons\delete_icon.jpg" class="iconButton" title="Delete Current Layer" onclick="flipNote.deleteLayer()" />
+                <img src="icons\add_icon.jpg" class="iconButton" title="Add layer at top" onclick="flipNote.addLayer()" />
+                <img src="icons\moveup_icon.jpg" class="iconButton" title="Move current layer upward" onclick="flipNote.moveLayerUp()" />
+                <img src="icons\movedown_icon.jpg" class="iconButton" title="Move current layer downward" onclick="flipNote.moveLayerDown()" />
+                <img src="icons\copy_icon.jpg" class="iconButton" title="Copy current layer" onclick="flipNote.copyLayer(flipNote.mc)"/>
+                <img src="icons\paste_icon.jpg" class="iconButton" title="Paste layer at top" onclick="flipNote.pasteLayer()"/>
+            </div>
+            <div style="background-color: #ECECEC;">Layer Opacity </div>
+            <div id="layerOpacity">
+                <br />
+                <label for="opacityRange" id="opacityValue">100%</label>
+                <input type="range" min="0" max="100" value="100" id="opacityRange" name="opacityRange" oninput="flipNote.changeOpacity()" style="width: 90px;" />
+            </div>
+            <br />
+            <div style="background-color: #ECECEC;">Layers </div>
+            <div id="layersContainer">
+
+            </div>
+        </fieldset>
+    </div>
+
+    <!--Generate GIF-->
+    <div style="text-align: center; padding-top: 20px;" id="makeGIF" hidden>
+        <fieldset>
+            <label for="fps">Frames per second:</label>
+            <input type="number" style="width: 40px;" id="fps" name="fps" value="1" />
+            <br />
+            <button onclick="flipNote.makeGIF()">Generate GIF</button>
+        </fieldset>
+    </div>
+
+    <!--GIF output-->
+    <div style="text-align: center; padding-top: 20px;" id="gifdiv" hidden>
+        <hr style="width: 10%;" />
+        <img alt="Error." id="output">
+    </div>
+    <script type="text/javascript" src="flipnote.js"></script>
+    <script type="text/javascript" src="gifencoder/LZWEncoder.js"></script>
+    <script type="text/javascript" src="gifencoder/NeuQuant.js"></script>
+    <script type="text/javascript" src="gifencoder/GIFEncoder.js"></script>
+</body>
+</html>
