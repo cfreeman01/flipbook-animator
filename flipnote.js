@@ -429,10 +429,12 @@ var flipNote = {
     },
 
     cPointerDown: function (event) {
+        event.preventDefault();
         flipNote.currentTool.startPath(event);
     },
 
     cPointerMove: function (event) {
+        event.preventDefault();
         flipNote.currentTool.draw(event);
     },
 
@@ -450,7 +452,6 @@ var flipNote = {
         },
 
         draw: function (event) {
-            event.preventDefault();
             var rect;
             var xpos;
             var ypos;
@@ -487,7 +488,6 @@ var flipNote = {
         },
 
         draw: function (event) {
-            event.preventDefault();
             var rect;
             var xpos;
             var ypos;
@@ -546,7 +546,6 @@ var flipNote = {
         },
 
         draw: function (event) {
-            event.preventDefault();
             var rect;
             var xpos;
             var ypos;
