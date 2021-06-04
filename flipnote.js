@@ -450,6 +450,7 @@ var flipNote = {
         },
 
         draw: function (event) {
+            event.preventDefault();
             var rect;
             var xpos;
             var ypos;
@@ -486,6 +487,7 @@ var flipNote = {
         },
 
         draw: function (event) {
+            event.preventDefault();
             var rect;
             var xpos;
             var ypos;
@@ -544,6 +546,7 @@ var flipNote = {
         },
 
         draw: function (event) {
+            event.preventDefault();
             var rect;
             var xpos;
             var ypos;
