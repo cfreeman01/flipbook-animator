@@ -52,16 +52,17 @@ var flipNote = {
 
     adjustPositions: function () {  //adjust position of absolutely positioned elements upon page resize
         var rect = flipNote.bc.getBoundingClientRect();
-        document.getElementById("undoButton").style.left = rect.left + "px";
-        document.getElementById("deleteButton").style.right = rect.left + "px";
-        document.getElementById("addButton").style.right = (rect.left + 50) + "px";
-        document.getElementById("redoButton").style.left = (rect.left + 50) + "px";
+        document.getElementById("undoButton").style.left = rect.left + window.scrollX + "px";
+        document.getElementById("redoButton").style.left = (rect.left + 50 + window.scrollX) + "px";
+        document.getElementById("deleteButton").style.left = ((rect.right - 30) + window.scrollX) + "px";
+        document.getElementById("addButton").style.left = ((rect.right - 80) + window.scrollX) + "px";
 
         var options = document.getElementById("optionsDiv");
-        options.style.left = (rect.right + 30) + "px";
+        options.style.left = (rect.right + 30 + window.scrollX) + "px";
         options.style.top = (rect.top + window.scrollY) + "px";
         var layers = document.getElementById("layersDiv");
-        layers.style.right = (rect.right + 30) + "px";
+        var lRect = layers.getBoundingClientRect();
+        layers.style.left = ((rect.left - lRect.width - 30) + window.scrollX) + "px";
         layers.style.top = (rect.top + window.scrollY) + "px";
 
         var i;
