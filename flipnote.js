@@ -62,12 +62,22 @@ var flipNote = {
         options.style.top = (rect.top + window.scrollY) + "px";
         var layers = document.getElementById("layersDiv");
         var lRect = layers.getBoundingClientRect();
-        layers.style.left = ((rect.left - lRect.width - 30) + window.scrollX) + "px";
-        layers.style.top = (rect.top + window.scrollY) + "px";
+
+        //if there is enough room on the left, place layer menu to the left of the canvas
+        if (((rect.left - lRect.width - 30) + window.scrollX) > 0) {
+            layers.style.left = ((rect.left - lRect.width - 30) + window.scrollX) + "px";
+            layers.style.top = (rect.top + window.scrollY) + "px";
+        }
+        //otherwise, place it on the right under the options/tools menu
+        else {
+            layers.style.left = (rect.right + 30 + window.scrollX) + "px";
+            layers.style.top = options.getBoundingClientRect().bottom + window.scrollY + "px";
+        }
 
         var i;
         var layerArray = flipNote.cm[flipNote.cFrame];
         var rect = flipNote.bc.getBoundingClientRect();
+        //set position of each layer
         for (i = 0; i < layerArray.length; i++) {
             layerArray[i].style.left = (rect.left + window.scrollX) + "px";
             layerArray[i].style.top = (rect.top + window.scrollY) + "px";
@@ -90,6 +100,7 @@ var flipNote = {
         var menuItem = flipNote.createLayerMenuItem(layerArray.length - 1);
         flipNote.lmi[flipNote.cFrame].push(menuItem);
         flipNote.updateLayerMenu();
+        flipNote.adjustPositions();
         return newLayer;
     },
 
@@ -314,6 +325,7 @@ var flipNote = {
         flipNote.mctx.lineWidth = tempLineWidth;
 
         flipNote.clearUndoRedoStacks();
+        flipNote.adjustPositions();
     },
 
     nextFrame: function () { //move to the next frame
@@ -334,6 +346,7 @@ var flipNote = {
         flipNote.mctx.lineWidth = tempLineWidth;
 
         flipNote.clearUndoRedoStacks();
+        flipNote.adjustPositions();
     },
 
     prevFrame: function () {  //move to the previous frame
@@ -351,6 +364,7 @@ var flipNote = {
         document.getElementById("frameCount").innerHTML = "frame " + (flipNote.cFrame + 1) + "/" + flipNote.cm.length;
 
         flipNote.clearUndoRedoStacks();
+        flipNote.adjustPositions();
     },
 
     deleteFrame(deleteIndex) { //remove the frame at cm[deleteIndex]
