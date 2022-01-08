@@ -1,4 +1,4 @@
-This repository is outdated, please see the new version here: https://cfreeman01.github.io/flipbook-animator-2/
+This repository is outdated, please see the new version here: https://github.com/cfreeman01/flipbook-animator-2
   ## Features
   - :hammer_and_wrench: Four different tools: Pencil, pen, eraser, and dropper
   - :paintbrush: Change brush size and color
